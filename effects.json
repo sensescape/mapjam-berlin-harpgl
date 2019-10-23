@@ -1,0 +1,14 @@
+{
+    "bloom": {
+        "strength": 0.25,
+        "threshold": 0.75,
+        "radius": 0.2,
+        "enabled": true
+    },
+    "outline": {
+        "enabled": true,
+        "ghostExtrudedPolygons": false,
+        "thickness": 0.0158,
+        "color": "#ff0000"
+    }
+}

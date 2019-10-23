@@ -1,0 +1,399 @@
+{
+    "sky": {
+        "type": "cubemap",
+        "positiveX": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_px.png",
+        "negativeX": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_nx.png",
+        "positiveY": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_py.png",
+        "negativeY": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_ny.png",
+        "positiveZ": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_pz.png",
+        "negativeZ": "https://unpkg.com/@here/harp-map-theme@latest/resources/Sky_nz.png"
+    },
+    "fog": {
+        "color": "#ffffff",
+        "startRatio": 0.9
+    },
+    "clearColor": "#FFFFFF",
+    "lights": [
+        {
+            "type": "ambient",
+            "color": "#ffffff",
+            "name": "ambientLight",
+            "intensity": 0.9
+        },
+        {
+            "type": "directional",
+            "color": "#dbdbdb",
+            "name": "light1",
+            "intensity": 0.9,
+            "direction": {
+                "x": 1,
+                "y": 5,
+                "z": 0.5
+            }
+        },
+        {
+            "type": "directional",
+            "color": "#000000",
+            "name": "light2",
+            "intensity": 0.8,
+            "direction": {
+                "x": -1,
+                "y": -3,
+                "z": 1
+            }
+        }
+    ],
+    "defaultTextStyle": {
+        "name": "defaultTextStyle",
+        "color": "#6D7477",
+        "fontCatalogName": "fira"
+    },
+    "textStyles": [
+        {
+            "name": "smallSign",
+            "color": "#000000",
+            "fontCatalogName": "fira"
+        },
+        {
+            "name": "smallSignLight",
+            "color": "#FFFFFF",
+            "fontCatalogName": "fira"
+        },
+        {
+            "name": "placeMarker",
+            "color": "#60FF60",
+            "fontCatalogName": "fira"
+        }
+    ],
+    "fontCatalogs": [
+        {
+            "name": "fira",
+            "url": "https://unpkg.com/@here/harp-fontcatalog@latest/resources/Default_FontCatalog.json"
+        }
+    ],
+    "images": {
+        "maki_icons": {
+            "url": "https://unpkg.com/@here/harp-map-theme@latest/resources/maki_icons.png",
+            "preload": true,
+            "atlas": "https://unpkg.com/@here/harp-map-theme@latest/resources/maki_icons.json"
+        }
+    },
+    "styles": {
+        "tilezen": [
+            {
+                "description": "water",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "water"],
+                    ["==", ["get", "$geometryType"], "polygon"]
+                ],
+                "technique": "fill",
+                "attr": {
+                    "color": "#000000"
+                },
+                "renderOrder": 5
+            },
+            {
+                "description": "park",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "landuse"],
+                    ["==", ["get", "$geometryType"], "polygon"],
+                    [
+                        "in",
+                        ["get", "kind"],
+                        [
+                            "nature",
+                            "forest",
+                            "park",
+                            "wood",
+                            "natural_wood",
+                            "grass",
+                            "meadow",
+                            "village_green",
+                            "dog_park",
+                            "garden",
+                            "nature_reserve",
+                            "protected_area"
+                        ]
+                    ]
+                ],
+                "technique": "standard",
+                "attr": {
+                    "color": "#E8E8E8",
+                    "roughness": 0.125,
+                    "metalness": 0,
+                    "map": "park4.png",
+                    "mapProperties": {
+                        "repeatU": 80,
+                        "repeatV": 10,
+                        "wrapS": "repeat",
+                        "wrapT": "repeat"
+                    },
+                    "textureCoordinateType": "tile-space"
+                },
+                "renderOrder": 0.2
+            },
+            {
+                "description": "national_park",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "landuse"],
+                    ["==", ["get", "$geometryType"], "polygon"],
+                    ["==", ["get", "kind"], "national_park"]
+                ],
+                "technique": "standard",
+                "attr": {
+                    "color": "#cccccc",
+                    "roughness": 0.125,
+                    "metalness": 0,
+                    "map": "park5.png",
+                    "mapProperties": {
+                        "repeatU": 10,
+                        "repeatV": 70,
+                        "wrapS": "repeat",
+                        "wrapT": "repeat"
+                    },
+                    "textureCoordinateType": "tile-space"
+                },
+                "renderOrder": 1
+            },
+            {
+                "description": "locality_pop_>10000000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    ["any", [">", ["get", "population"], 10000000], ["has", "country_capital"]],
+                    ["has", "country_capital"]
+                ],
+                "technique": "text",
+                "attr": {
+                    "priority": 61,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "values": [9.6, 11.2, 12.8, 14.4, 16, 19.2, 22.4, 25.6, 28.8, 32]
+                    },
+                    "color": "#666666",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.0,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>10000000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    ["any", [">", ["get", "population"], 10000000], ["has", "country_capital"]]
+                ],
+                "technique": "text",
+                "attr": {
+                    "priority": 61,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "values": [9.6, 11.2, 12.8, 14.4, 16, 19.2, 22.4, 25.6, 28.8, 32]
+                    },
+                    "color": "#666666",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.0,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>1000000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    ["any", [">", ["get", "population"], 1000000], ["has", "region_capital"]]
+                ],
+                "technique": "text",
+                "attr": {
+                    "priority": 60,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                        "values": [9.6, 11.2, 12.8, 14.4, 16, 19.2, 22.4, 25.6, 28.8, 32]
+                    },
+                    "color": "#666666",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.0,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>400000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    [">", ["get", "population"], 400000]
+                ],
+                "technique": "text",
+                "attr": {
+                    "priority": 59,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [4, 5, 6, 7, 8, 9, 10, 11],
+                        "values": [11.2, 12.8, 16, 19.2, 22.4, 24, 25.6, 27.2]
+                    },
+                    "color": "#090A0B",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.5,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>100000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    [">", ["get", "population"], 100000]
+                ],
+                "technique": "none",
+                "attr": {
+                    "priority": 58,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        "values": [9.6, 11.2, 12.8, 16, 19.2, 20.8, 22.4, 24, 25.6]
+                    },
+                    "color": "#090A0B",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.5,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>50000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    [">", ["get", "population"], 50000]
+                ],
+                "technique": "none",
+                "attr": {
+                    "priority": 57,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [10, 11, 12, 13],
+                        "values": [16, 19.2, 22.4, 24]
+                    },
+                    "color": "#090A0B",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.5,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_>10000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    [">", ["get", "population"], 10000]
+                ],
+                "technique": "none",
+                "attr": {
+                    "priority": 56,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [11, 12, 13, 14, 15],
+                        "values": [16, 17.6, 19.2, 20.8, 22.4]
+                    },
+                    "color": "#090A0B",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.5,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "locality_pop_<=10000",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "places"],
+                    ["==", ["get", "kind"], "locality"],
+                    ["has", "population"],
+                    ["<=", ["get", "population"], 10000]
+                ],
+                "technique": "none",
+                "attr": {
+                    "priority": 50,
+                    "size": {
+                        "interpolation": "Linear",
+                        "zoomLevels": [11, 12, 13, 14, 15],
+                        "values": [12.8, 14.4, 16, 17.6, 19.2]
+                    },
+                    "color": "#090A0B",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundOpacity": 0.5,
+                    "textFadeTime": 0.75,
+                    "fadeNear": 0.8,
+                    "fadeFar": 0.9
+                },
+                "final": true
+            },
+            {
+                "description": "building_geometry",
+                "when": [
+                    "all",
+                    ["==", ["get", "$layer"], "buildings"],
+                    ["==", ["get", "$geometryType"], "polygon"]
+                ],
+                "technique": "extruded-polygon",
+                "attr": {
+                    "color": "#cccccc",
+                    "opacity": 0.95,
+                    "roughness": 1,
+                    "metalness": 0.8,
+                    "emissive": "#000000",
+                    "emissiveIntensity": 0.9,
+                    "footprint": true,
+                    "maxSlope": 0.8799999999999999,
+                    "lineWidth": 1,
+                    "lineColor": "#ffffff",
+                    "lineColorMix": 0.0,
+                    "fadeNear": 0.2,
+                    "fadeFar": 1,
+                    "lineFadeNear": -0.85,
+                    "lineFadeFar": 1
+                },
+                "renderOrder": 2000
+            }
+        ]
+    }
+}
